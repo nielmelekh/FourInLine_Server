@@ -4,7 +4,7 @@ const users = [
     userRole: "admin"},
   { userId: 2, firstName: "Maya", lastName: "Johnson", 
     createDate: new Date("2023-01-01T01:00:00Z"), updateDate: new Date("2023-01-01T01:00:00Z"),
-    userRole: "user"},
+    userRole: "manager"},
   { userId: 3, firstName: "Noa", lastName: "Williams", 
     createDate: new Date("2023-01-01T01:00:00Z"), updateDate: new Date("2023-01-01T01:00:00Z"),
     userRole: "user"},
