@@ -16,4 +16,6 @@ const users = [
     userRole: "user"},
 ]
 
-module.exports = users
+const managementRoles = ["admin", "manager"]
+
+module.exports = { users, managementRoles }

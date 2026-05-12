@@ -1,15 +1,34 @@
-const express = require("express")
-const router = express.Router()
-const userController = require("../controllers/userController")
-//const { validateCreateUser } = require("../middleware/validate")
+const express = require("express");
+const router = express.Router();
 
-// GET /users?age=&page=&limit=  — filtering + pagination (slide 17)
-router.get("/", userController.getUsers)
+const userController = require("../controllers/userController");
+const {authorizeRoles, authorizeUser} = require("../middleware/auth");
+const { validateId, validateUserBody } = require("../middleware/validateUser");
 
-// GET /users/:id  — retrieve a specific user (slide 10)
-router.get("/:id", userController.getUser)
+router.get("/", authorizeRoles("admin", "manager"), userController.getUsers);
 
-// POST /users  — validate body, then create
-router.post("/", /*validateCreateUser,*/ userController.createUser)
+router.get("/:id", authorizeUser, validateId, userController.getUser);
 
-module.exports = router
+router.post(
+  "/",
+  authorizeRoles("admin", "manager"),
+  validateUserBody,
+  userController.createUser
+);
+
+router.put(
+  "/:id",
+  authorizeUser,
+  validateId,
+  validateUserBody,
+  userController.updateUser
+);
+
+router.delete(
+  "/:id",
+  authorizeRoles("admin"),
+  validateId,
+  userController.deleteUser
+);
+
+module.exports = router;

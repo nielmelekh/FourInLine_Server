@@ -1,4 +1,5 @@
-const users = require("../models/userData")
+//const { use } = require("react")
+const users = require("../models/userData").users
 
 // GET /users
 function getUsers(req, res, next) {
@@ -10,15 +11,15 @@ function getUsers(req, res, next) {
     next()
 }
 
-// GET /users/:id  —> centralized error handling
+// GET /users/:id
 async function getUser(req, res, next) {
     try {
-    const user = users.find((u) => u.userId === Number(req.params.id))
-    if (!user){
-        res.status(404)
-        throw new Error("User not found", { userId: req.params.id })
-    } 
-    res.json({ success: true, data: user, error: null })
+        const user = users.find((u) => u.userId === Number(req.params.id))
+        if (!user){
+            res.status(404)
+            throw new Error("User not found", { userId: req.params.id })
+        } 
+        res.json({ success: true, data: user, error: null })
     } catch (err) {
         next(err)
     }
@@ -27,29 +28,36 @@ async function getUser(req, res, next) {
 // POST /users  — called after validateCreateUser middleware
 function createUser(req, res, next) {
     const { firstName, lastName, userRole} = req.body
-    const newUser = { id: users.length + 1, firstName, lastName, userRole, 
+    const newUser = { userId: users.length + 1, firstName, lastName, userRole, 
     createDate: (new Date()).toISOString(), updateDate: (new Date()).toISOString() }
     users.push(newUser)
-    res.status(201).json({ success: true, data: newUser.id, error: null })
+    res.status(201).json({ success: true, data: newUser.userId, error: null })
     next()
 }
 
 
-//I added update and delete functions for completeness
+//PUT /users/:id  — called after validateExistingUser middleware
 function updateUser(req, res) {
-  res.json({
-    success: true,
-    data: "User updated",
-    error: null
-  })
+    const userId = Number(req.params.id)
+    const { firstName, lastName, userRole} = req.body
+    users[userId - 1] = { userId, firstName, lastName, userRole, 
+    createDate: users[userId - 1].createDate, updateDate: (new Date()).toISOString() }
+    res.status(200).json({
+        success: true,
+        data: userId,
+        error: null
+    })
 }
 
+// DELETE /users/:id — called after validateExistingUser middleware
 function deleteUser(req, res) {
-  res.json({
-    success: true,
-    data: "User deleted",
-    error: null
-  })
+    const userId = Number(req.params.id)
+    users.splice(userId - 1, 1)
+    res.status(200).json({
+        success: true,
+        data: userId,
+        error: null
+    })
 }
 
 module.exports = {
