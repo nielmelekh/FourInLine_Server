@@ -12,6 +12,9 @@ app.use(logger)
 const userRoutes = require("./routes/users")
 app.use("/users", userRoutes)
 
+const matchRoutes = require("./routes/matches")
+app.use("/matches", matchRoutes)
+
 // must be just before logger and after all other routes
 const errorHandler = require("./middleware/errorHandler")
 app.use(errorHandler)

@@ -3,11 +3,11 @@ const router = express.Router();
 
 const userController = require("../controllers/userController");
 const {authorizeRoles, authorizeUser} = require("../middleware/auth");
-const { validateId, validateUserBody } = require("../middleware/validateUser");
+const { validateUserId, validateUserBody } = require("../middleware/validateUser");
 
 router.get("/", authorizeRoles("admin", "manager"), userController.getUsers);
 
-router.get("/:id", authorizeUser, validateId, userController.getUser);
+router.get("/:id", authorizeUser, validateUserId, userController.getUser);
 
 router.post(
   "/",
@@ -19,7 +19,7 @@ router.post(
 router.put(
   "/:id",
   authorizeUser,
-  validateId,
+  validateUserId,
   validateUserBody,
   userController.updateUser
 );
@@ -27,7 +27,7 @@ router.put(
 router.delete(
   "/:id",
   authorizeRoles("admin"),
-  validateId,
+  validateUserId,
   userController.deleteUser
 );
 

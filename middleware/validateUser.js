@@ -1,5 +1,5 @@
 const users = require("../models/userData").users
-function validateId(req, res, next) {
+function validateUserId(req, res, next) {
   try {
     const user = users.find((u) => u.userId === Number(req.params.id))
     if (!user){
@@ -29,6 +29,6 @@ function validateUserBody(req, res, next) {
 }
 
 module.exports = {
-  validateId,
+  validateUserId,
   validateUserBody
 }

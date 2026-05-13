@@ -6,9 +6,9 @@ function errorHandler(err, req, res, next) {
     success: false,
     data: null,
     error: {
-      code: "VALIDATION_ERROR",
-      message: err.message,
-      details: {}
+        code: "VALIDATION_ERROR",
+        message: err.message,
+        details: {}
     }
   })
  }
