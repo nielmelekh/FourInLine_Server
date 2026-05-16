@@ -1,0 +1,407 @@
+{
+  "info": {
+    "_postman_id": "b0ceb53d-f474-482d-aaae-8df0a678c6a0",
+    "name": "Four In Line API",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53744543",
+    "_collection_link": "https://go.postman.co/collection/53744543-b0ceb53d-f474-482d-aaae-8df0a678c6a0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get all users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "admin",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/users",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get user by id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "manager",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/users/3",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "admin",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \r\n    \"firstName\": \"Some\", \r\n    \"lastName\": \"Dude\", \r\n    \"userRole\": \"manager\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update user",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "admin",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \r\n    \"firstName\": \"Noa\", \r\n    \"lastName\": \"Wilinily\", \r\n    \"userRole\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users/3",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "admin",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users/3",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Matches",
+      "item": [
+        {
+          "name": "Get all matches",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "admin",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/matches",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "matches"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get match by id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "manager",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/matches/2",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "matches",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add match",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "admin",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \r\n    \"player1Id\": 4,\r\n    \"player2Id\": 5,\r\n    \"matchResult\": \"Player2Wins\",\r\n    \"matchDate\": \"2025-08-01T15:00:00Z\",\r\n    \"matchDurationSeconds\": 800\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/matches",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "matches"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update match",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "admin",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \r\n    \"player1Id\": 3,\r\n    \"player2Id\": 4,\r\n    \"matchResult\": \"Draw\",\r\n    \"matchDate\": \"2025-08-01T15:00:00Z\"//,\r\n    //\"matchDurationSeconds\": 400\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/matches/2",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "matches",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete match",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "admin",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/matches/2",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "matches",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error",
+      "item": [
+        {
+          "name": "Delete user as manager",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "manager",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \r\n    \"player1Id\": 4,\r\n    \"player2Id\": 5,\r\n    \"matchResult\": \"Player2Wins\",\r\n    \"matchDate\": \"2025-08-01T15:00:00Z\",\r\n    \"matchDurationSeconds\": 800\r\n}"
+            },
+            "url": {
+              "raw": "{{url}}/users/1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Missing fields in match creation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-user-role",
+                "value": "manager",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \r\n    \"player1Id\": 4,\r\n    \"matchDurationSeconds\": 800\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/matches",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "matches"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "url",
+      "value": "http://localhost:3000"
+    }
+  ]
+}

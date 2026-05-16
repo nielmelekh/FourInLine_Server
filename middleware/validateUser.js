@@ -4,7 +4,9 @@ function validateUserId(req, res, next) {
     const user = users.find((u) => u.userId === Number(req.params.id))
     if (!user){
       res.status(400)
-      throw new Error("Invalid id parameter.")
+      const err = new Error("Invalid id parameter.")
+      err.details = { "userId": req.params.id }
+      throw err
     }
 
     next()
@@ -19,7 +21,12 @@ function validateUserBody(req, res, next) {
 
     if (!firstName || !lastName || !userRole) {
       res.status(400)
-      throw new Error("Missing required fields: firstName, lastName, userRole.")
+      const err = new Error("Missing required fields: firstName, lastName, userRole.")
+      err.details = { "missingFields": [] }
+      if (!firstName) err.details.missingFields.push("firstName")
+      if (!lastName) err.details.missingFields.push("lastName")
+      if (!userRole) err.details.missingFields.push("userRole")
+      throw err
     }
 
     next()

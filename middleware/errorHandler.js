@@ -8,7 +8,7 @@ function errorHandler(err, req, res, next) {
     error: {
         code: "VALIDATION_ERROR",
         message: err.message,
-        details: {}
+        details: err.details || {}
     }
   })
  }
@@ -19,8 +19,8 @@ function errorHandler(err, req, res, next) {
         data: null,
         error: {
           code: "FORBIDDEN",
-          message: "You do not have permission to perform this action.",
-          details: {}
+          message: err.message,
+          details: err.details || {}
         }
       });
   }
@@ -35,7 +35,7 @@ function errorHandler(err, req, res, next) {
   res.status(500).json({ "success": false, "data": null, "error": {
             "code": "INTERNAL_SERVER_ERROR",
             "message": "Internal Server Error",
-            "details": {}
+            "details": err.details || {}
         }})
 }
 
