@@ -69,10 +69,22 @@ function deleteMatch(req, res) {
     })
 }
 
+function getUserMatches(req, res, next) {
+    const userId = Number(req.header("x-user-id"));
+    const userMatches = matchData.filter(m => m.player1Id === userId || m.player2Id === userId)
+    res.json({
+        success: true,
+        data: userMatches,
+        error: null,
+    })
+    next()
+}
+
 module.exports = {
-  getMatches,
-  getMatch,
-  createMatch,
-  updateMatch,
-  deleteMatch
+    getMatches,
+    getMatch,
+    createMatch,
+    updateMatch,
+    deleteMatch,
+    getUserMatches
 }

@@ -1,6 +1,14 @@
 const express = require("express")
+const cors = require('cors');
 const app = express()
-const PORT = 3000
+const PORT = 5173
+
+// Enable CORS for all routes (Must be before route definitions)
+app.use(cors({
+    origin: 'http://localhost:3000', // Allow React app's specific port
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true // Important when sending tokens or cookies
+}));
 
 app.use(express.json())
 
@@ -14,6 +22,9 @@ app.use("/users", userRoutes)
 
 const matchRoutes = require("./routes/matches")
 app.use("/matches", matchRoutes)
+
+const appRoutes = require("./routes/appRoutes")
+app.use("/api", appRoutes)
 
 // must be just before logger and after all other routes
 const errorHandler = require("./middleware/errorHandler")

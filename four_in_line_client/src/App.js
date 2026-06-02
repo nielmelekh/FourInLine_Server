@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Settings from './pages/Settings';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    // Basic auth state simulation for routing protection
+    const isAuthenticated = !!localStorage.getItem('token'); 
+
+    return (
+        <Router>
+            {isAuthenticated && <Navbar />}
+            <div className="main-content" style={{ minHeight: '80vh', padding: '20px' }}>
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
+                    <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
+                    <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />} />
+                </Routes>
+            </div>
+            <Footer />
+        </Router>
+    );
 }
 
 export default App;

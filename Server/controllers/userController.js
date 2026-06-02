@@ -60,10 +60,47 @@ function deleteUser(req, res) {
     })
 }
 
+function login(req, res) {
+    const { email, password } = req.body
+    const user = users.find(u => u.email === email && u.password === password)
+    if (user) {
+        const { password, ...userWithoutPassword } = user; // Exclude password from response
+        res.status(200).json({ success: true, data: { token: "mock-token", "user": userWithoutPassword }, error: null })
+    } else {
+        res.status(401).json({ success: false, data: null, error: "Invalid credentials" })
+    }
+}
+
+function getCurrentUser(req, res, next) {
+    const userId = Number(req.header("x-user-id"));
+    const user = users.find((u) => u.userId === userId);
+    if (!user) {
+        res.status(404);
+        const err = new Error("User not found", { requestedUserId: userId });
+        next(err);
+        return;
+    }
+    const { password, ...userWithoutPassword } = user;
+    res.json({ success: true, data: userWithoutPassword, error: null });
+}
+
+/*function getUserNames(req, res, next) {
+    const userIds = req.body.userIds; // Expecting an array of user IDs in the request body
+    const userNames = users
+        .filter(u => userIds.includes(u.userId))
+        .map(u => ({ userId: u.userId, username: u.username }));
+    res.json({ success: true, data: userNames, error: null });
+}
+    const userNames = users.map(u => ({ userId: u.userId, firstName: u.firstName, lastName: u.lastName }));
+    res.json({ success: true, data: userNames, error: null });
+}*/
+
 module.exports = {
   getUsers,
   getUser,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser, 
+  login,
+  getCurrentUser
 }
