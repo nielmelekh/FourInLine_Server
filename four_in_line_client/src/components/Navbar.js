@@ -32,17 +32,19 @@ const Navbar = () => {
     };
 
     return (
-        <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 20px', background: '#eee' }}>
-            <div><strong>Four In Line API</strong></div> {/* Project name/logo [cite: 33] */}
-            <div style={{ display: 'flex', gap: '15px' }}>
-                <Link to="/dashboard">Dashboard</Link>
-                <Link to="/settings">Settings</Link>
-            </div>
-            <div>
-                <span style={{ marginRight: '15px' }}>Hello, {user?.username}</span> {/* Display user information [cite: 35] */}
-                <button onClick={handleLogout}>Logout</button>
-            </div>
-        </nav>
+    <nav className="navbar">
+        <div className="logo">Four In Line</div>
+
+        <div className="nav-links">
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/settings">Settings</Link>
+        </div>
+
+        <div className="nav-user">
+            <span>Hello, {user?.username}</span>
+            <button onClick={handleLogout}>Logout</button>
+        </div>
+    </nav>
     );
 };
 

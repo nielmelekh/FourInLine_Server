@@ -14,6 +14,10 @@ const Settings = () => {
                 if (res.ok) {
                     const data = await res.json();
                     setSettings(data);
+                    if (data.theme) {
+                        document.documentElement.setAttribute('data-theme', data.theme);
+                        localStorage.setItem('theme', data.theme);
+                }
                 }
             } catch (err) {
                 setStatus(prev => ({ ...prev, error: 'Failed to load settings.' }));
@@ -25,7 +29,14 @@ const Settings = () => {
     }, []);
 
     const handleChange = (e) => {
-        setSettings({ ...settings, [e.target.name]: e.target.value });
+    const updatedSettings = { ...settings, [e.target.name]: e.target.value };
+    setSettings(updatedSettings);
+
+    // Update the visual theme immediately without changing the server flow.
+    if (e.target.name === 'theme') {
+        document.documentElement.setAttribute('data-theme', e.target.value);
+        localStorage.setItem('theme', e.target.value);
+    }
     };
 
     const handleSubmit = async (e) => {
@@ -47,19 +58,19 @@ const Settings = () => {
     if (status.loading) return <p>Loading settings...</p>; // Loading state [cite: 44]
 
     return (
-        <div>
+        <div className="settings-container">
             <h2>User Settings</h2>
             {status.success && <p style={{ color: 'green' }}>{status.success}</p>}
             {status.error && <p style={{ color: 'red' }}>{status.error}</p>}
             
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', maxWidth: '300px', gap: '10px' }}>
+            <form onSubmit={handleSubmit}>
                 <label>
                     Username:
-                    <input type="text" name="username" value={settings.username} onChange={handleChange} required />
+                    <input type="text" name="username" value={settings.username} onChange={handleChange} />
                 </label>
                 <label>
                     Email:
-                    <input type="email" name="email" value={settings.email} onChange={handleChange} required />
+                    <input type="email" name="email" value={settings.email} onChange={handleChange} />
                 </label>
                 <label>
                     Theme Preference:

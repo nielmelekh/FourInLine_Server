@@ -8,22 +8,24 @@ const Table = ({ data, columns }) => {
     const headers = Object.values(columns);
 
     return (
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+    <div className="table-wrapper">
+        <table>
             <thead>
-                <tr style={{ background: '#f4f4f4' }}>
+                <tr>
                     {headers.map((header) => (
-                        <th key={header} style={{ padding: '8px', borderBottom: '2px solid #ccc' }}>
+                        <th key={header}>
                             {header.toUpperCase()}
                         </th>
                     ))}
                 </tr>
             </thead>
+
             <tbody>
-                {/* Dynamically map over array [cite: 56] */}
+                {/* Renders table rows dynamically from backend data. */}
                 {data.map((row, index) => (
-                    <tr key={index} style={{ borderBottom: '1px solid #eee' }}>
+                    <tr key={index}>
                         {Object.keys(columns).map((key) => (
-                            <td key={key} style={{ padding: '8px' }}>
+                            <td key={key}>
                                 {row[key]}
                             </td>
                         ))}
@@ -31,6 +33,7 @@ const Table = ({ data, columns }) => {
                 ))}
             </tbody>
         </table>
+    </div>
     );
 };
 
