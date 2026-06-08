@@ -1,11 +1,11 @@
 const express = require("express")
 const cors = require('cors');
 const app = express()
-const PORT = 5173
+const PORT = 3000
 
 // Enable CORS for all routes (Must be before route definitions)
 app.use(cors({
-    origin: 'http://localhost:3000', // Allow React app's specific port
+    origin: 'http://localhost:5173', // Allow React app's specific port
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true // Important when sending tokens or cookies
 }));

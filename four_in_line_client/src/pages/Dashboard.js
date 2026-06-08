@@ -32,14 +32,14 @@ const Dashboard = () => {
                 setError('Could not load matches.');
                 setMatches([]);
             } finally {
-                setLoading(false); // Display loading state [cite: 48]
+                setLoading(false); // Display loading state
             }
         };
         loadData();
     }, []);
 
     if (loading) return <p>Loading dashboard...</p>;
-    if (matches.length === 0) return <p>No matches available at the moment.</p>; // Handle empty states [cite: 48]
+    if (matches.length === 0) return <p>No matches available at the moment.</p>; // Handle empty states
 
     return (
         <div>
@@ -49,21 +49,28 @@ const Dashboard = () => {
             <h3 style = {{ textAlign: 'center' }}>Featured Matches</h3>
             <div style={{ display: 'flex', gap: '15px', marginBottom: '30px', alignItems: 'center', justifyContent: 'center' }}>
                 {/* Cards used at least 3 times */}
-                {[...matches].filter(match => match.matchResult === 'Victory').sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate)).slice(0, 1).map(match => (
+                {
+                    // latest matches
+                    localStorage.getItem('dashboardShowCards') === 'latest' ?
+                    [...matches].sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate)).slice(0, 3).map(match => (
+                        <Card key={match.id} title={"Latest Match"} player1={match.player1Username} player2={match.player2Username} result={match.matchResult}>
+                        </Card>
+                    )) :
+                    // best matches for different criteria 
+                    [...matches].filter(match => match.matchResult === 'Victory').sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate)).slice(0, 1).map(match => (
                     <Card key={match.id} title={"Latest Victory"} player1={match.player1Username} player2={match.player2Username} result={match.matchResult}>
                         <p>Match Date: <br/>{match.matchDate}</p>
                     </Card>
-                ))}
-                {[...matches].sort((a, b) => new Date(b.matchDurationSeconds) - new Date(a.matchDurationSeconds)).slice(0, 1).map(match => (
+                )).concat([...matches].sort((a, b) => new Date(b.matchDurationSeconds) - new Date(a.matchDurationSeconds)).slice(0, 1).map(match => (
                     <Card key={match.id} title={"Longest Match"} player1={match.player1Username} player2={match.player2Username} result={match.matchResult}>
                         <p>Match Duration:<br/>{match.matchDurationSeconds} seconds</p>
                     </Card>
-                ))}
-                {[...matches].sort((a, b) => new Date(a.matchDurationSeconds) - new Date(b.matchDurationSeconds)).slice(0, 1).map(match => (
+                ))).concat([...matches].sort((a, b) => new Date(a.matchDurationSeconds) - new Date(b.matchDurationSeconds)).slice(0, 1).map(match => (
                     <Card key={match.id} title={"Shortest Match"} player1={match.player1Username} player2={match.player2Username} result={match.matchResult}>
                         <p>Match Duration:<br/>{match.matchDurationSeconds} seconds</p>
                     </Card>
-                ))}
+                )))
+                }
             </div>
 
             <h3>Match Table</h3>

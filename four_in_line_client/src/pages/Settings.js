@@ -4,7 +4,7 @@ import { fetchSettings, updateSettings } from '../services/api';
 
 const Settings = () => {
     // At least 3 editable settings [cite: 42]
-    const [settings, setSettings] = useState({ username: '', email: '', theme: 'light' });
+    const [settings, setSettings] = useState({ username: '', dashboardShowCards: 'latest', theme: 'light' });
     const [status, setStatus] = useState({ loading: true, saving: false, error: null, success: null });
 
     useEffect(() => {
@@ -12,12 +12,12 @@ const Settings = () => {
             try {
                 const res = await fetchSettings();
                 if (res.ok) {
-                    const data = await res.json();
-                    setSettings(data);
-                    if (data.theme) {
-                        document.documentElement.setAttribute('data-theme', data.theme);
-                        localStorage.setItem('theme', data.theme);
-                }
+                    const responseJson = await res.json();
+                    setSettings(responseJson.data);
+                    if (responseJson.data.theme) {
+                        document.documentElement.setAttribute('data-theme', responseJson.data.theme);
+                        localStorage.setItem('theme', responseJson.data.theme);
+                    }
                 }
             } catch (err) {
                 setStatus(prev => ({ ...prev, error: 'Failed to load settings.' }));
@@ -33,10 +33,17 @@ const Settings = () => {
     setSettings(updatedSettings);
 
     // Update the visual theme immediately without changing the server flow.
+    /*
     if (e.target.name === 'theme') {
         document.documentElement.setAttribute('data-theme', e.target.value);
         localStorage.setItem('theme', e.target.value);
     }
+
+    if (e.target.name === 'dashboardShowCards') {
+        alert(`Dashboard preference changed to: ${e.target.value}`); // Inform users about their dashboard preference change [cite: 43]
+        localStorage.setItem('dashboardShowCards', e.target.value);
+    }
+        */
     };
 
     const handleSubmit = async (e) => {
@@ -47,6 +54,11 @@ const Settings = () => {
             const res = await updateSettings(settings);
             if (res.ok) {
                 setStatus({ ...status, saving: false, success: 'Settings updated successfully!' });
+                
+                document.documentElement.setAttribute('data-theme', settings.theme);
+                localStorage.setItem('theme', settings.theme);
+
+                localStorage.setItem('dashboardShowCards', settings.dashboardShowCards);
             } else {
                 throw new Error('Update failed');
             }
@@ -69,8 +81,11 @@ const Settings = () => {
                     <input type="text" name="username" value={settings.username} onChange={handleChange} />
                 </label>
                 <label>
-                    Email:
-                    <input type="email" name="email" value={settings.email} onChange={handleChange} />
+                    Dashboard Show Cards Preference:
+                    <select name="dashboardShowCards" value={settings.dashboardShowCards} onChange={handleChange}>
+                        <option value="latest">Latest</option>
+                        <option value="best">Best</option>
+                    </select>
                 </label>
                 <label>
                     Theme Preference:

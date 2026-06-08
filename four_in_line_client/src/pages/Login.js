@@ -1,5 +1,5 @@
 // src/pages/Login.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginCall } from '../services/api';
 
@@ -9,6 +9,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,6 +33,9 @@ const Login = () => {
                 localStorage.setItem('token', responseJson.data.token); // Store mock token
                 localStorage.setItem('userRole', responseJson.data.user.userRole); // Store user role
                 localStorage.setItem('userId', responseJson.data.user.userId); // Store user ID
+                document.documentElement.setAttribute('data-theme', responseJson.data.user.theme);
+                localStorage.setItem('theme', responseJson.data.user.theme); // Store theme preference
+                localStorage.setItem('dashboardShowCards', responseJson.data.user.dashboardShowCards); // Store dashboard preference
                 navigate('/dashboard'); // Redirect after successful login [cite: 30]
                 window.location.reload(); // Force navbar render
             } else {

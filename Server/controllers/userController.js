@@ -71,6 +71,11 @@ function login(req, res) {
     }
 }
 
+function logout(req, res, next) {
+    // Implementation for logout functionality
+    return res.status(200).json({ success: true, message: "User logged out successfully", error: null });
+}
+
 function getCurrentUser(req, res, next) {
     const userId = Number(req.header("x-user-id"));
     const user = users.find((u) => u.userId === userId);
@@ -84,16 +89,32 @@ function getCurrentUser(req, res, next) {
     res.json({ success: true, data: userWithoutPassword, error: null });
 }
 
-/*function getUserNames(req, res, next) {
-    const userIds = req.body.userIds; // Expecting an array of user IDs in the request body
-    const userNames = users
-        .filter(u => userIds.includes(u.userId))
-        .map(u => ({ userId: u.userId, username: u.username }));
-    res.json({ success: true, data: userNames, error: null });
+function getSettings(req, res, next) {
+    const userId = Number(req.header("x-user-id"));
+    const user = users.find((u) => u.userId === userId);
+    if (!user) {
+        res.status(404);
+        const err = new Error("User not found For Settings", { requestedUserId: userId });
+        next(err);
+        return;
+    }
+    const { username, dashboardShowCards, theme, ...userNotSettings } = user;
+    res.json({ success: true, data: { username, dashboardShowCards, theme }, error: null });
 }
-    const userNames = users.map(u => ({ userId: u.userId, firstName: u.firstName, lastName: u.lastName }));
-    res.json({ success: true, data: userNames, error: null });
-}*/
+
+function updateSettings(req, res, next) {
+    const userId = Number(req.header("x-user-id"));
+    const userIndex = users.findIndex((u) => u.userId === userId);
+    if (userIndex === -1) {
+        res.status(404);
+        const err = new Error("User not found For Settings", { requestedUserId: userId });
+        next(err);
+        return;
+    }
+    const { username, dashboardShowCards, theme } = req.body;
+    users[userIndex] = { ...users[userIndex], username: username, dashboardShowCards: dashboardShowCards, theme: theme };
+    res.status(200).json({ success: true, data: { username, dashboardShowCards, theme }, error: null });
+}
 
 module.exports = {
   getUsers,
@@ -102,5 +123,8 @@ module.exports = {
   updateUser,
   deleteUser, 
   login,
-  getCurrentUser
+  logout,
+  getCurrentUser,
+  getSettings,
+  updateSettings
 }

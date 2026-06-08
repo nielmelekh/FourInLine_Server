@@ -1,5 +1,5 @@
 // src/services/api.js
-const BASE_URL = 'http://localhost:5173'; // Target backend server 
+const BASE_URL = 'http://localhost:3000'; // Target backend server 
 
 export const loginCall = (credentials) => {
     return fetch(`${BASE_URL}/api/auth/login`, {
@@ -10,7 +10,7 @@ export const loginCall = (credentials) => {
 };
 
 export const logoutCall = () => {
-    return fetch(`${BASE_URL}/api/auth/logout`, { method: 'POST' }); // POST /api/auth/logout [cite: 34]
+    return fetch(`${BASE_URL}/api/auth/logout`, { method: 'POST' }); // POST /api/auth/logout
 };
 
 export const fetchCurrentUser = () => {
@@ -18,7 +18,7 @@ export const fetchCurrentUser = () => {
         method: 'GET',
         headers: { 'x-user-id': localStorage.getItem('userId') || '-1' }, // Pass user ID for authentication,
         params: { id: localStorage.getItem('userId') || '-1' } // Pass user ID for
-    }); // GET /api/users/me [cite: 34]
+    }); // GET /api/users/me
 };
 
 export const fetchMatches = (userId) => {
@@ -28,17 +28,20 @@ export const fetchMatches = (userId) => {
             'x-user-id': userId || 'user'
          }
 
-        }); // GET /matches [cite: 47]
+        }); // GET /matches
 };
 
 export const fetchSettings = () => {
-    return fetch(`${BASE_URL}/api/settings`); // GET /api/settings [cite: 43]
+    return fetch(`${BASE_URL}/api/settings`, { // GET /api/settings
+        method: 'GET',
+        headers: { 'x-user-id': localStorage.getItem('userId') || '-1' }
+    });
 };
 
 export const updateSettings = (data) => {
     return fetch(`${BASE_URL}/api/settings`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-user-id': localStorage.getItem('userId') || '-1' },
         body: JSON.stringify(data)
-    }); // PUT /api/settings [cite: 43]
+    }); // PUT /api/settings
 };

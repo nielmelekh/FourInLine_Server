@@ -27,6 +27,8 @@ const Navbar = () => {
     const handleLogout = async () => {
         await logoutCall();
         localStorage.removeItem('token');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userId');
         navigate('/login');
         window.location.reload(); // Handle logout correctly [cite: 35]
     };

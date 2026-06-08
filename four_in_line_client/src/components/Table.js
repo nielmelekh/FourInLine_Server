@@ -25,7 +25,7 @@ const Table = ({ data, columns }) => {
                 {data.map((row, index) => (
                     <tr key={index}>
                         {Object.keys(columns).map((key) => (
-                            <td key={key}>
+                            <td key={key} style={{ textAlign: 'center' }}>
                                 {row[key]}
                             </td>
                         ))}
