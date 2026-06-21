@@ -2,12 +2,14 @@ const express = require("express")
 const cors = require('cors');
 const app = express()
 const PORT = 3000
+const http = require("http");
+const { Server } = require("socket.io");
+const setupGameSocket = require("./sockets/gameSocket");
 
-// Enable CORS for all routes (Must be before route definitions)
 app.use(cors({
     origin: 'http://localhost:5173', // Allow React app's specific port
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true // Important when sending tokens or cookies
+    credentials: true
 }));
 
 app.use(express.json())
@@ -30,6 +32,19 @@ app.use("/api", appRoutes)
 const errorHandler = require("./middleware/errorHandler")
 app.use(errorHandler)
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
-})
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:5173",
+        methods: ["GET", "POST", "PUT", "DELETE"]
+    }
+});
+
+app.set("io", io);
+
+setupGameSocket(io);
+
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
