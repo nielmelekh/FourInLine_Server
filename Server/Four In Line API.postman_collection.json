@@ -221,7 +221,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{ \r\n    \"player1Id\": 4,\r\n    \"player2Id\": 5,\r\n    \"matchResult\": \"Player2Wins\",\r\n    \"matchDate\": \"2025-08-01T15:00:00Z\",\r\n    \"matchDurationSeconds\": 800\r\n}",
+              "raw": "{ \r\n    \"player1Id\": 4,\r\n    \"player2Id\": 5,\r\n    \"matchResult\": \"Player2Wins\",\r\n    \"matchDate\": \"2025-08-01T15:00:00Z\",\r\n    \"durationInSeconds\": 800\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -253,7 +253,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{ \r\n    \"player1Id\": 3,\r\n    \"player2Id\": 4,\r\n    \"matchResult\": \"Draw\",\r\n    \"matchDate\": \"2025-08-01T15:00:00Z\"//,\r\n    //\"matchDurationSeconds\": 400\r\n}",
+              "raw": "{ \r\n    \"player1Id\": 3,\r\n    \"player2Id\": 4,\r\n    \"matchResult\": \"Draw\",\r\n    \"matchDate\": \"2025-08-01T15:00:00Z\"//,\r\n    //\"durationInSeconds\": 400\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -324,7 +324,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{ \r\n    \"player1Id\": 4,\r\n    \"player2Id\": 5,\r\n    \"matchResult\": \"Player2Wins\",\r\n    \"matchDate\": \"2025-08-01T15:00:00Z\",\r\n    \"matchDurationSeconds\": 800\r\n}"
+              "raw": "{ \r\n    \"player1Id\": 4,\r\n    \"player2Id\": 5,\r\n    \"matchResult\": \"Player2Wins\",\r\n    \"matchDate\": \"2025-08-01T15:00:00Z\",\r\n    \"durationInSeconds\": 800\r\n}"
             },
             "url": {
               "raw": "{{url}}/users/1",
@@ -352,7 +352,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{ \r\n    \"player1Id\": 4,\r\n    \"matchDurationSeconds\": 800\r\n}",
+              "raw": "{ \r\n    \"player1Id\": 4,\r\n    \"durationInSeconds\": 800\r\n}",
               "options": {
                 "raw": {
                   "language": "json"

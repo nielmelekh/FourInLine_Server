@@ -616,7 +616,7 @@ json
 
 &#x20;     "matchDate": "2024-06-01T15:00:00.000Z",
 
-&#x20;     "matchDurationSeconds": 600
+&#x20;     "durationInSeconds": 600
 
 &#x20;   }
 
@@ -712,7 +712,7 @@ json
 
 &#x20;   "matchDate": "2024-06-01T15:00:00.000Z",
 
-&#x20;   "matchDurationSeconds": 600
+&#x20;   "durationInSeconds": 600
 
 &#x20; },
 
@@ -780,7 +780,7 @@ json
 
 &#x20; "matchDate": "2024-06-01T15:00:00.000Z",
 
-&#x20; "matchDurationSeconds": 600
+&#x20; "durationInSeconds": 600
 
 }
 
@@ -824,7 +824,7 @@ json
 
 &#x20;   "code": "VALIDATION\_ERROR",
 
-&#x20;   "message": "Missing some of the required fields: player1Id, player2Id, matchResult, matchDate, matchDurationSeconds.",
+&#x20;   "message": "Missing some of the required fields: player1Id, player2Id, matchResult, matchDate, durationInSeconds.",
 
 &#x20;   "details": {}
 
@@ -878,7 +878,7 @@ json
 
 &#x20; "matchDate": "2024-06-01T15:00:00.000Z",
 
-&#x20; "matchDurationSeconds": 700
+&#x20; "durationInSeconds": 700
 
 }
 
@@ -922,7 +922,7 @@ json
 
 &#x20;   "code": "VALIDATION\_ERROR",
 
-&#x20;   "message": "Missing some of the required fields: player1Id, player2Id, matchResult, matchDate, matchDurationSeconds.",
+&#x20;   "message": "Missing some of the required fields: player1Id, player2Id, matchResult, matchDate, durationInSeconds.",
 
 &#x20;   "details": {}
 

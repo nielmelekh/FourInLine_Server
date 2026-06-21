@@ -36,22 +36,27 @@ function authorizeUser(req, res, next) {
     }
 }
 
-const {matchData} = require("../models/matchData")
-function isUserInvolvedInMatch(userId, matchId) {
-    const match = matchData.find((m) => m.matchId === matchId);
+const { prisma } = require("../prismaClient")
+async function isUserInvolvedInMatch(userId, matchId) {
+    const match = await prisma.match.findUnique({
+        where: {
+            matchId: matchId
+        }
+    })
     return match && (match.player1Id === userId || match.player2Id === userId);
 }
-function authorizeMatchAccess(req, res, next) {
+async function authorizeMatchAccess(req, res, next) {
     const userRole = String(req.header("x-user-role"));
     const userId = Number(req.header("x-user-id"));
     const matchId = Number(req.params.id);
 
     try {
-        if (!userRole || (!managementRoles.includes(userRole) && !isUserInvolvedInMatch(userId, matchId))) {
+        const isUserInvolved = await isUserInvolvedInMatch(userId, matchId);
+        if (!userRole || (!managementRoles.includes(userRole) && !isUserInvolved)) {
             res.status(403);
-            const err = new Error("Forbidden: You do not have permission to access this match.");
-            err.details = { "userID": userId, "matchId": matchId };
-            throw err;
+            throw new Error("Forbidden: You do not have permission to access this match.",
+                { "userID": userId, "matchId": matchId }
+            );
         }
         next();
     } catch (err) {

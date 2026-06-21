@@ -14,6 +14,9 @@ model match {
   startTime DateTime @db.DateTime(0)
   endTime   DateTime @db.DateTime(0)
 
+  player1   user     @relation("PlayerOne", fields: [player1Id], references: [userId])
+  player2   user     @relation("PlayerTwo", fields: [player2Id], references: [userId])
+
   @@index([player2Id], map: "player2Id_idx")
   @@index([player1Id], map: "userId_idx")
 }
@@ -29,4 +32,7 @@ model user {
   userRole           String    @default("user") @db.VarChar(16)
   theme              String    @default("light") @db.VarChar(16)
   dashboardShowCards String    @default("best") @db.VarChar(45)
+
+  matchesAsPlayer1   match[]   @relation("PlayerOne")
+  matchesAsPlayer2   match[]   @relation("PlayerTwo")
 }

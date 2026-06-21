@@ -3,11 +3,11 @@ const router = express.Router();
 
 const matchController = require("../controllers/matchController");
 const {authorizeRoles, authorizeMatchAccess} = require("../middleware/auth");
-const { validateMatchId, validateMatchBody } = require("../middleware/validateMatch");
+const { validateMatchExists, validateMatchBody } = require("../middleware/validateMatch");
 
 router.get("/", authorizeRoles("admin", "manager"), matchController.getMatches);
 
-router.get("/:id", authorizeMatchAccess, validateMatchId, matchController.getMatch);
+router.get("/:id", authorizeMatchAccess, matchController.getMatch);
 
 router.post(
   "/",
@@ -19,15 +19,13 @@ router.post(
 router.put(
   "/:id",
   authorizeRoles("admin", "manager"),
-  validateMatchId,
-  validateMatchBody,
   matchController.updateMatch
 );
 
 router.delete(
   "/:id",
   authorizeRoles("admin"),
-  validateMatchId,
+  validateMatchExists,
   matchController.deleteMatch
 );
 

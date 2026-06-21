@@ -7,7 +7,7 @@ const { validateUserId, validateUserBody } = require("../middleware/validateUser
 
 router.get("/", authorizeRoles("admin", "manager"), userController.getUsers);
 
-router.get("/:id", authorizeUser, validateUserId, userController.getUser);
+router.get("/:id", authorizeUser, userController.getUser);
 
 router.post(
   "/",
@@ -20,7 +20,6 @@ router.put(
   "/:id",
   authorizeUser,
   validateUserId,
-  validateUserBody,
   userController.updateUser
 );
 

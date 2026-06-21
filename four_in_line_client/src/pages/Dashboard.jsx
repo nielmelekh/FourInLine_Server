@@ -19,12 +19,16 @@ const Dashboard = () => {
                 const formattedMatches = responseJson.data.map(match => {
                     return {
                         ...match, // Keep all the other properties exactly the same
+                        // needs to remain in default format for correct sorting
+                        startTime: new Date(match.startTime),
                         // Overwrite the MatchDate property with a human-readable version
-                        matchDate: new Date(match.matchDate).toLocaleString('en-GB'),
-                        matchResult: match.matchResult === 'Draw' ? 'Draw' : 
-                        ((match.matchResult === 'Player1Wins' && match.player1Id === userId) || 
-                        (match.matchResult === 'Player2Wins' && match.player2Id === userId)) ? 
-                        'Victory' : 'Defeat'
+                        endTime: new Date(match.endTime).toLocaleString('en-GB'),
+                        result: match.result === 0 ? 'Draw' : 
+                        ((match.result === 1 && match.player1Id === userId) || 
+                        (match.result === 2 && match.player2Id === userId)) ? 
+                        'Victory' : 'Defeat',
+                        player1Username: match.player1.username,
+                        player2Username: match.player2.username
                     }
                 });
                 setMatches(formattedMatches);
@@ -52,30 +56,31 @@ const Dashboard = () => {
                 {
                     // latest matches
                     localStorage.getItem('dashboardShowCards') === 'latest' ?
-                    [...matches].sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate)).slice(0, 3).map(match => (
-                        <Card key={match.id} title={"Latest Match"} player1={match.player1Username} player2={match.player2Username} result={match.matchResult}>
+                    [...matches].sort((a, b) => new Date(b.startTime) - new Date(a.startTime)).slice(0, 3).map(match => (
+                        <Card key={match.id} title={"Latest Match"} player1={match.player1Username} player2={match.player2Username} result={match.result}>
                         </Card>
                     )) :
                     // best matches for different criteria 
-                    [...matches].filter(match => match.matchResult === 'Victory').sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate)).slice(0, 1).map(match => (
-                    <Card key={match.id} title={"Latest Victory"} player1={match.player1Username} player2={match.player2Username} result={match.matchResult}>
-                        <p>Match Date: <br/>{match.matchDate}</p>
+                    [...matches].filter(match => match.result === 'Victory').sort((a, b) => new Date(b.startTime) - new Date(a.startTime)).slice(0, 1).map(match => (
+                    <Card key={match.id} title={"Latest Victory"} player1={match.player1Username} player2={match.player2Username} result={match.result}>
+                        <p>Match Date: <br/>{match.startTime.toLocaleString('en-GB')}</p>
                     </Card>
-                )).concat([...matches].sort((a, b) => new Date(b.matchDurationSeconds) - new Date(a.matchDurationSeconds)).slice(0, 1).map(match => (
-                    <Card key={match.id} title={"Longest Match"} player1={match.player1Username} player2={match.player2Username} result={match.matchResult}>
-                        <p>Match Duration:<br/>{match.matchDurationSeconds} seconds</p>
+                )).concat([...matches].sort((a, b) => b.durationInSeconds - a.durationInSeconds).slice(0, 1).map(match => (
+                    <Card key={match.id} title={"Longest Match"} player1={match.player1Username} player2={match.player2Username} result={match.result}>
+                        <p>Match Duration:<br/>{match.durationInSeconds} seconds</p>
                     </Card>
-                ))).concat([...matches].sort((a, b) => new Date(a.matchDurationSeconds) - new Date(b.matchDurationSeconds)).slice(0, 1).map(match => (
-                    <Card key={match.id} title={"Shortest Match"} player1={match.player1Username} player2={match.player2Username} result={match.matchResult}>
-                        <p>Match Duration:<br/>{match.matchDurationSeconds} seconds</p>
+                ))).concat([...matches].sort((a, b) => a.durationInSeconds - b.durationInSeconds).slice(0, 1).map(match => (
+                    <Card key={match.id} title={"Shortest Match"} player1={match.player1Username} player2={match.player2Username} result={match.result}>
+                        <p>Match Duration:<br/>{match.durationInSeconds} seconds</p>
                     </Card>
                 )))
                 }
             </div>
 
             <h3>Match Table</h3>
-            <Table data={matches.sort((a, b) => new Date(b.matchDate) - new Date(a.matchDate))} 
-             columns={{ player1Username: 'Player 1', player2Username: 'Player 2', matchDate: 'Match Date', matchResult: 'Result', matchDurationSeconds: 'Duration (Seconds)' }} />
+            <Table data={matches.sort((a, b) => new Date(b.startTime) - new Date(a.startTime)).map(match => 
+                ({...match, startTime: match.startTime.toLocaleString('en-GB')}))} 
+             columns={{ player1Username: 'Player 1', player2Username: 'Player 2', startTime: 'Match Started', result: 'Result', durationInSeconds: 'Duration (Seconds)' }} />
         </div>
     );
 };

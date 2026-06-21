@@ -1,83 +1,152 @@
-const {matchData, MatchResult} = require("../models/matchData")
+const { prisma } = require("../prismaClient");
 
 // GET /matches
-function getMatches(req, res, next) {
-    res.json({
-        success: true,
-        data: matchData,
-        error: null,
-    })
-    next()
+async function getMatches(req, res, next) {
+    try {
+        const matches = await prisma.match.findMany();
+        res.json({
+            success: true,
+            data: matches,
+            error: null,
+        });
+    } catch (err) {
+        next(err);
+    }
 }
 
 // GET /matches/:id
 async function getMatch(req, res, next) {
     try {
-        const match = matchData.find((m) => m.matchId === Number(req.params.id))
+        const matchId = Number(req.params.id);
+        const match = await prisma.match.findUnique({
+            where: { matchId: matchId }
+        });
+
         if (!match){
-            res.status(404)
-            throw new Error("Match not found", { matchId: req.params.id })
+            res.status(404);
+            throw new Error("Match not found", { matchId: req.params.id });
         } 
-        res.json({ success: true, data: match, error: null })
+        res.json({ success: true, data: match, error: null });
     } catch (err) {
-        next(err)
+        next(err);
     }
 }
 
-// POST /matches  — called after validateCreateMatch middleware
-function createMatch(req, res, next) {
-    const { player1Id, player2Id, matchResult, matchDate, matchDurationSeconds } = req.body
-    const newMatch = { matchId: matchData.length + 1, 
-        player1Id: player1Id, player2Id: player2Id, matchResult: matchResult, 
-        matchDate: matchDate, matchDurationSeconds: matchDurationSeconds }
-    matchData.push(newMatch)
-    res.status(201).json({ success: true, data: newMatch.matchId, error: null })
-    next()
-}
+// POST /matches - called after validateMatchBody middleware
+async function createMatch(req, res, next) {
+    try {
+        const { player1Id, player2Id, result, startTime, endTime } = req.body;
 
+        // Convert frontend payload to database schema requirements
+        const startTimeObj = new Date(startTime);
+        const endTimeObj = new Date(endTime);
 
-//PUT /matches/:id  — called after validateExistingMatch middleware
-function updateMatch(req, res) {
-    const matchId = Number(req.params.id)
-    const { player1Id, player2Id, matchResult, matchDate, matchDurationSeconds } = req.body
-    const matchIndex = matchData.findIndex((m) => m.matchId === matchId)
-    if (matchIndex === -1) {
-        res.status(404)
-        throw new Error("Match not found", { matchId: req.params.id })
+        const newMatch = await prisma.match.create({
+            data: {
+                player1Id: player1Id,
+                player2Id: player2Id,
+                result: result,
+                startTime: startTimeObj,
+                endTime: endTimeObj
+            }
+        });
+
+        res.status(201).json({ success: true, data: newMatch, error: null });
+    } catch (err) {
+        next(err);
     }
-    matchData[matchIndex] = { ...matchData[matchIndex], player1Id, player2Id, matchResult, matchDate, matchDurationSeconds }
-    res.status(200).json({
-        success: true,
-        data: matchId,
-        error: null
-    })
 }
 
-// DELETE /matches/:id — called after validateExistingMatch middleware
-function deleteMatch(req, res) {
-    const matchId = Number(req.params.id)
-    const matchIndex = matchData.findIndex((m) => m.matchId === matchId)
-    if (matchIndex === -1) {
-        res.status(404)
-        throw new Error("Match not found", { matchId: req.params.id })
+
+// PUT /matches/:id
+async function updateMatch(req, res, next) {
+    try {
+        const matchId = Number(req.params.id);
+        const { player1Id, player2Id, result, startTime, endTime } = req.body;
+
+        // Safely map optional variables for the update
+        const startTimeObj = startTime ? new Date(startTime) : undefined;
+        const endTimeObj = endTime ? new Date(endTime) : undefined;
+
+        const updatedMatch = await prisma.match.update({
+            where: { matchId: matchId },
+            data: {
+                player1Id: player1Id,
+                player2Id: player2Id,
+                result: result,
+                startTime: startTimeObj,
+                endTime: endTimeObj
+            }
+        });
+
+        if (!updatedMatch){
+            res.status(404);
+            throw new Error("Match not found", { matchId: req.params.id });
+        } 
+        res.status(200).json({
+            success: true,
+            data: updatedMatch,
+            error: null
+        });
+    } catch (err) {
+        next(err);
     }
-    matchData.splice(matchIndex, 1)
-    res.status(200).json({
-        success: true,
-        data: matchId,
-        error: null
-    })
 }
 
-function getUserMatches(req, res, next) {
-    const userId = Number(req.header("x-user-id"));
-    const userMatches = matchData.filter(m => m.player1Id === userId || m.player2Id === userId)
-    res.json({
-        success: true,
-        data: userMatches,
-        error: null,
-    })
-    next()
+// DELETE /matches/:id - called after validateMatchExists middleware
+async function deleteMatch(req, res, next) {
+    try {
+        const matchId = Number(req.params.id);
+
+        // Proceed with deletion if the match exists
+        await prisma.match.delete({
+            where: { matchId: matchId }
+        });
+
+        res.status(200).json({
+            success: true,
+            data: matchId,
+            error: null
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
+// GET /matches/user - called after validateMatchExists middleware
+async function getUserMatches(req, res, next) {
+    try {
+        const userId = Number(req.header("x-user-id"));
+        
+        const userMatches = await prisma.match.findMany({
+            where: {
+                OR: [
+                    { player1Id: userId },
+                    { player2Id: userId }
+                ],
+            },
+            include: {
+                player1: { select: { username: true } },
+                player2: { select: { username: true } }
+            }
+        });
+
+        // add durationInSeconds to each match object
+        const matchesWithDuration = userMatches.map(match => {
+            const startTime = new Date(match.startTime);
+            const endTime = new Date(match.endTime);
+            const durationInSeconds = (endTime - startTime) / 1000;
+            return { ...match, durationInSeconds };
+        });
+
+        res.json({
+            success: true,
+            data: matchesWithDuration,
+            error: null,
+        });
+    } catch (err) {
+        next(err);
+    }
 }
 
 module.exports = {

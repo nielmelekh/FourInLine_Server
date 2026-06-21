@@ -12,7 +12,7 @@ const matchData = [{
   "player2Username": "MayaJohnson",
   "matchResult": MatchResult.Player1Wins,
   "matchDate": new Date("2024-06-01T15:00:00Z"),
-  "matchDurationSeconds": 600
+  "durationInSeconds": 600
 },
 {
   "matchId": 2,
@@ -22,7 +22,7 @@ const matchData = [{
   "player2Username": "EliBrown",
   "matchResult": MatchResult.Player2Wins,
   "matchDate": new Date("2024-08-01T17:00:00Z"),
-  "matchDurationSeconds": 350
+  "durationInSeconds": 350
 },
 {
   "matchId": 3,
@@ -32,7 +32,7 @@ const matchData = [{
   "player2Username": "NoaWilliams",
   "matchResult": MatchResult.Draw,
   "matchDate": new Date("2024-04-04T11:00:00Z"),
-  "matchDurationSeconds": 220
+  "durationInSeconds": 220
 },
 {
   "matchId": 4,
@@ -42,7 +42,7 @@ const matchData = [{
   "player2Username": "DanSmith",
   "matchResult": MatchResult.Player1Wins,
   "matchDate": new Date("2025-06-08T19:00:00Z"),
-  "matchDurationSeconds": 100
+  "durationInSeconds": 100
 },
 {
   "matchId": 5,
@@ -52,7 +52,7 @@ const matchData = [{
   "player2Username": "AlexDavis",
   "matchResult": MatchResult.Player1Wins,
   "matchDate": new Date("2024-03-01T16:00:00Z"),
-  "matchDurationSeconds": 1200
+  "durationInSeconds": 1200
 },
 {
   "matchId": 6,
@@ -62,7 +62,7 @@ const matchData = [{
   "player2Username": "DanSmith",
   "matchResult": MatchResult.Draw,
   "matchDate": new Date("2023-08-11T11:00:00Z"),
-  "matchDurationSeconds": 550
+  "durationInSeconds": 550
 }]
 
 module.exports = { matchData, MatchResult }
