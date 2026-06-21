@@ -59,6 +59,8 @@ const Settings = () => {
                 localStorage.setItem('theme', settings.theme);
 
                 localStorage.setItem('dashboardShowCards', settings.dashboardShowCards);
+                localStorage.setItem('username', settings.username); // Store username
+
             } else {
                 throw new Error('Update failed');
             }

@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Settings from './pages/Settings';
+import Game from './pages/Game';
 
 function App() {
     // Basic auth state simulation for routing protection
@@ -27,6 +28,7 @@ function App() {
                     <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
                     <Route path="/settings" element={isAuthenticated ? <Settings /> : <Navigate to="/login" />} />
                     <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />} />
+                    <Route path="/game/:gameId" element={isAuthenticated ? <Game /> : <Navigate to="/login" />} />
                 </Routes>
             </div>
             <Footer />

@@ -33,6 +33,7 @@ const Login = () => {
                 localStorage.setItem('token', responseJson.data.token); // Store mock token
                 localStorage.setItem('userRole', responseJson.data.user.userRole); // Store user role
                 localStorage.setItem('userId', responseJson.data.user.userId); // Store user ID
+                localStorage.setItem('username', responseJson.data.user.username); // Store username
                 document.documentElement.setAttribute('data-theme', responseJson.data.user.theme);
                 localStorage.setItem('theme', responseJson.data.user.theme); // Store theme preference
                 localStorage.setItem('dashboardShowCards', responseJson.data.user.dashboardShowCards); // Store dashboard preference
