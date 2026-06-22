@@ -39,7 +39,6 @@ const Game = () => {
         });
     };
 
-    if (error) return <p style={{ color: "red", textAlign: "center" }}>{error}</p>;
     if (!game) return <p style={{ textAlign: "center" }}>Loading game...</p>;
 
     const currentUserId = Number(localStorage.getItem("userId"));
@@ -50,6 +49,12 @@ const Game = () => {
     return (
         <div style={{ textAlign: "center" }}>
             <h2>Real-Time Four In Line</h2>
+
+            {error && (
+            <p style={{ color: "red", fontWeight: "bold" }}>
+                {error}
+            </p>
+            )}
 
             <p><strong>Game ID:</strong> {game.gameId}</p>
             
