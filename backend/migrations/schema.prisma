@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model match {
+  matchId   Int      @id @default(autoincrement())
+  player1Id Int
+  player2Id Int
+  result    Int
+  startTime DateTime @db.DateTime(0)
+  endTime   DateTime @db.DateTime(0)
+
+  player1 user @relation("PlayerOne", fields: [player1Id], references: [userId], map: "match_player1_fk")
+  player2 user @relation("PlayerTwo", fields: [player2Id], references: [userId], map: "match_player2_fk")
+
+  @@index([player2Id], map: "player2Id_idx")
+  @@index([player1Id], map: "userId_idx")
+}
+
+model user {
+  userId             Int       @id @default(autoincrement())
+  firstName          String    @db.VarChar(16)
+  lastName           String    @db.VarChar(16)
+  username           String    @unique(map: "username_UNIQUE") @db.VarChar(16)
+  email              String    @unique(map: "email_UNIQUE") @db.VarChar(255)
+  password           String    @db.VarChar(32)
+  timeOfCreation     DateTime? @default(now()) @db.Timestamp(0)
+  userRole           String    @default("user") @db.VarChar(16)
+  theme              String    @default("light") @db.VarChar(16)
+  dashboardShowCards String    @default("best") @db.VarChar(45)
+
+  matchesAsPlayer1 match[] @relation("PlayerOne")
+  matchesAsPlayer2 match[] @relation("PlayerTwo")
+
+  friendsAdded Friend[] @relation("UserToFriend")
+  friendsOf    Friend[] @relation("FriendToUser")
+}
+
+model Friend {
+  userId   Int
+  FriendId Int
+  accepted Boolean @default(false) // false means pending, true means accepted
+
+  user   user @relation("UserToFriend", fields: [userId], references: [userId])
+  friend user @relation("FriendToUser", fields: [FriendId], references: [userId])
+
+  @@id([userId, FriendId])
+}
