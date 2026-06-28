@@ -65,6 +65,12 @@ const Login = () => {
                 <button type="submit" disabled={loading}>
                     {loading ? 'Logging in...' : 'Login'}
                 </button>
+                <p className="register-link">
+                    Don't have an account?{" "}
+                    <span onClick={() => navigate("/register")}>
+                        Register
+                    </span>
+                </p>
             </form>
         </div>
     );

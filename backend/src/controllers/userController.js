@@ -222,6 +222,67 @@ async function updateSettings(req, res, next) {
     }
 }
 
+//new
+async function register(req, res, next) {
+    try {
+
+        const {
+            firstName,
+            lastName,
+            username,
+            email,
+            password
+        } = req.body;
+
+        if (!firstName || !lastName || !username || !email || !password) {
+            return res.status(400).json({
+                success: false,
+                error: "Missing required fields"
+            });
+        }
+
+        const existingUser = await prisma.user.findFirst({
+            where: {
+                OR: [
+                    { email },
+                    { username }
+                ]
+            }
+        });
+
+        if (existingUser) {
+            return res.status(409).json({
+                success: false,
+                error: "Username or email already exists"
+            });
+        }
+
+        const newUser = await prisma.user.create({
+            data: {
+                firstName,
+                lastName,
+                username,
+                email,
+                password,
+                userRole: "user"
+            }
+        });
+
+        const { password: dbPassword, ...userWithoutPassword } = newUser;
+
+        res.status(201).json({
+            success: true,
+            data: userWithoutPassword,
+            error: null
+        });
+
+    } catch (err) {
+        next(err);
+    }
+}
+
+//end
+
 module.exports = {
   getUsers,
   getUser,
@@ -230,6 +291,7 @@ module.exports = {
   deleteUser, 
   login,
   logout,
+  register,
   getCurrentUser,
   getSettings,
   updateSettings

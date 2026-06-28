@@ -253,3 +253,22 @@ form button {
   padding: 24px;
   color: var(--muted);
 }
+
+/* REGISTER LINK */
+
+.register-link {
+  text-align: center;
+  margin-top: 10px;
+  color: var(--text);
+  font-size: 15px;
+}
+
+.register-link span {
+  color: var(--primary);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.register-link span:hover {
+  text-decoration: underline;
+}

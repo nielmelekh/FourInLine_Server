@@ -81,3 +81,13 @@ export const deleteFriendConnection = (targetUserId) => {
         headers: { 'x-user-id': localStorage.getItem('userId') || '-1' }
     });
 };
+
+export const registerCall = (user) => {
+    return fetch(`${BASE_URL}/api/auth/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+    });
+};

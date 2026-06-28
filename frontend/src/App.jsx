@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Settings from './pages/Settings';
 import Game from './pages/Game';
 import Friends from './components/Friends';
+import Register from "./pages/Register";
 
 function App() {
     // Basic auth state simulation for routing protection
@@ -31,6 +32,7 @@ function App() {
                     <Route path="/friends" element={isAuthenticated ? <Friends /> : <Navigate to="/login" />} />
                     <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />} />
                     <Route path="/game/:gameId" element={isAuthenticated ? <Game /> : <Navigate to="/login" />} />
+                    <Route path="/register" element={<Register />} />
                 </Routes>
             </div>
             <Footer />
