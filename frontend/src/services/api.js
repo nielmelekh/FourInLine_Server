@@ -1,5 +1,5 @@
 // src/services/api.js
-const BASE_URL = process.env.BACKEND_URL; // Target backend server 
+const BASE_URL = process.env.REACT_APP_BACKEND_URL; // Target backend server 
 
 export const loginCall = (credentials) => {
     return fetch(`${BASE_URL}/api/auth/login`, {
