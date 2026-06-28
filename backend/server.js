@@ -12,7 +12,7 @@ const server = http.createServer(app);
 // Initializing Socket.io and attaching it to the server with its own CORS policy
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: process.env.FRONTEND_URL,
         methods: ["GET", "POST"]
     }
 });
