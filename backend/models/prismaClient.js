@@ -8,7 +8,7 @@ const adapter = new PrismaMariaDb({
     host: '127.0.0.1',
     port: 3306,
     user: 'root',
-    password: 'Shahar203',
+    password: 'Poiuyt10',
     database: 'FourInLineDB'
 });
 
