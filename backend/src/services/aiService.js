@@ -31,7 +31,7 @@ async function analyzeMatch(moveHistory, isDraw = false, winnerIsPlayer1 = null)
   `;
 
   const response = await ai.models.generateContent({
-    model: 'gemini-3.5-flash',
+    model: process.env.GEMINI_MODEL,
     contents: prompt,
     config: {
       // Force Gemini to output raw JSON matching this exact structure
