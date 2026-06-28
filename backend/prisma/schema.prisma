@@ -49,4 +49,5 @@ model Friend {
   friend user @relation("FriendToUser", fields: [FriendId], references: [userId])
 
   @@id([userId, FriendId])
+  @@map("friend")
 }
