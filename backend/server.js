@@ -22,7 +22,7 @@ setupGameSocket(io);
 
 // Enable CORS for standard Express API routes
 app.use(cors({
-    origin: 'http://localhost:5173', 
+    origin: process.env.FRONTEND_URL, 
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true 
 }));
